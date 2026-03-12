@@ -1,4 +1,6 @@
 package com.unicolombo.bibliotecApi.dto.usuario;
 
-public record CrearUsuarioDto(String nombre, String correo, String contrasena, String tipo) {
+import com.unicolombo.bibliotecApi.domain.model.TipoUsuario;
+
+public record CrearUsuarioDto(String nombre, String correo, String contrasena, TipoUsuario tipo) {
 }

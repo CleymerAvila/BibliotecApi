@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,12 +38,12 @@ public class ManejadorGlobalErrores {
 //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 //                .body(Map.of("timestamp", Instant.now(), "error", ex.getMessage()));
 //    }
-//
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<?> badCredentialsErrorHandler(BadCredentialsException exception){
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                .body(Map.of("error", exception.getMessage()));
-//    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> badCredentialsErrorHandler(BadCredentialsException exception){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", exception.getMessage()));
+    }
 
     public record ErrorValidationData(String field, String error){
         public ErrorValidationData(FieldError error){
