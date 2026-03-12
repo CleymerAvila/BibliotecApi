@@ -29,6 +29,9 @@ public class Libro {
     private String disponibilidad;
     @OneToMany(mappedBy = "libro")
     private List<Prestamo> prestamos;
+    @OneToMany(mappedBy = "libro")
+    private List<Reserva> reservas;
+
 
     public Libro(CrearLibroDto datos){
         this.titulo = datos.titulo();

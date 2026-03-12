@@ -5,6 +5,7 @@ import com.unicolombo.bibliotecApi.domain.repository.UsuarioRepository;
 import com.unicolombo.bibliotecApi.dto.usuario.ActualizarUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.CrearUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.UsuarioDto;
+import com.unicolombo.bibliotecApi.infrastructure.errors.exceptions.ValidacionDeLogicaDeNegocioException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class UsuarioService {
 
     public UsuarioDto obtenerUsuarioId(long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("El usuario con el id ingresado no existe"));
+                .orElseThrow(() -> new ValidacionDeLogicaDeNegocioException("El usuario con el id ingresado no existe"));
 
         return new UsuarioDto(usuario);
     }

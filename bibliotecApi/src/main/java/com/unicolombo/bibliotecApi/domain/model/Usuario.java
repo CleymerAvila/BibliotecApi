@@ -23,6 +23,8 @@ public class Usuario {
     private String contrasena;
     @OneToMany(mappedBy = "usuario")
     private List<Prestamo> prestamos;
+    @OneToMany(mappedBy = "usuario")
+    private List<Reserva> reservas;
 
     public Usuario(CrearUsuarioDto datos){
         this.nombre = datos.nombre();

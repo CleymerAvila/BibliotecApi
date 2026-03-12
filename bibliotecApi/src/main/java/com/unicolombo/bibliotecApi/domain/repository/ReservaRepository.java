@@ -1,9 +1,9 @@
 package com.unicolombo.bibliotecApi.domain.repository;
 
-import com.unicolombo.bibliotecApi.domain.model.Usuario;
+import com.unicolombo.bibliotecApi.domain.model.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 }

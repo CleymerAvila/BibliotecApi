@@ -5,6 +5,7 @@ import com.unicolombo.bibliotecApi.domain.repository.LibroRepository;
 import com.unicolombo.bibliotecApi.dto.libro.ActualizarLibroDto;
 import com.unicolombo.bibliotecApi.dto.libro.CrearLibroDto;
 import com.unicolombo.bibliotecApi.dto.libro.LibroDto;
+import com.unicolombo.bibliotecApi.infrastructure.errors.exceptions.ValidacionDeLogicaDeNegocioException;
 import jakarta.persistence.EntityNotFoundException;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class LibroService {
 
     public LibroDto obtenerLibroId(long idLibro) {
         Libro libro = this.libroRepository.findById(idLibro)
-                .orElseThrow(() -> new EntityNotFoundException("El libro con el id ingresado no se encuentra"));
+                .orElseThrow(() -> new ValidacionDeLogicaDeNegocioException("El libro con el id ingresado no se encuentra"));
 
         return new LibroDto(libro);
     }
