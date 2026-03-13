@@ -1,5 +1,6 @@
 package com.unicolombo.bibliotecApi.domain.model;
 
+import com.unicolombo.bibliotecApi.dto.auth.RegistroDto;
 import com.unicolombo.bibliotecApi.dto.usuario.ActualizarUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.CrearUsuarioDto;
 import jakarta.persistence.*;
@@ -38,6 +39,13 @@ public class Usuario implements UserDetails {
         this.correo = datos.correo();
         this.tipo = datos.tipo();
         this.contrasena = datos.contrasena();
+    }
+
+    public Usuario(RegistroDto datos){
+        this.nombre = datos.nombre();
+        this.correo = datos.correo();
+        this.contrasena = datos.contrasena();
+        this.tipo = TipoUsuario.ROLE_ESTUDIANTE;
     }
 
     public void actualizarDatos(ActualizarUsuarioDto datos){

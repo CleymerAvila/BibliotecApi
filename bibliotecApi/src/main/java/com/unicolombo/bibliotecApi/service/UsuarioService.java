@@ -2,6 +2,7 @@ package com.unicolombo.bibliotecApi.service;
 
 import com.unicolombo.bibliotecApi.domain.model.Usuario;
 import com.unicolombo.bibliotecApi.domain.repository.UsuarioRepository;
+import com.unicolombo.bibliotecApi.dto.auth.RegistroDto;
 import com.unicolombo.bibliotecApi.dto.usuario.ActualizarUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.CrearUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.UsuarioDto;
@@ -9,6 +10,7 @@ import com.unicolombo.bibliotecApi.infrastructure.errors.exceptions.ValidacionDe
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +21,23 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public UsuarioDto crearUsuario(CrearUsuarioDto datos){
-        Usuario usuarioGuardado = usuarioRepository.save(new Usuario(datos));
+        Usuario usuario = new Usuario(datos);
+        String contrasenaEncriptada = passwordEncoder.encode(datos.contrasena());
+        usuario.setContrasena(contrasenaEncriptada);
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+        return new UsuarioDto(usuarioGuardado);
+    }
+
+    public UsuarioDto registroUsuario(RegistroDto datos){
+        Usuario usuario = new Usuario(datos);
+        String contrasenaEncriptada = passwordEncoder.encode(datos.contrasena());
+        usuario.setContrasena(contrasenaEncriptada);
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
         return new UsuarioDto(usuarioGuardado);
     }
 
