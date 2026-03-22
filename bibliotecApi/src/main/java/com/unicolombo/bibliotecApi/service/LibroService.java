@@ -9,6 +9,8 @@ import com.unicolombo.bibliotecApi.infrastructure.errors.exceptions.ValidacionDe
 import jakarta.persistence.EntityNotFoundException;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +23,8 @@ public class LibroService {
     private LibroRepository libroRepository;
 
 
-    public List<LibroDto> obtenerLibros(){
-        return libroRepository.findAll()
-                .stream().map(LibroDto::new).toList();
+    public Page<LibroDto> obtenerLibros(Pageable pageable){
+        return libroRepository.findAll(pageable).map(LibroDto::new);
     }
     public LibroDto crearLibro(CrearLibroDto datos){
         Libro libroGuardado = libroRepository.save(new Libro(datos));
@@ -43,7 +44,7 @@ public class LibroService {
 
     public LibroDto obtenerLibroId(long idLibro) {
         Libro libro = this.libroRepository.findById(idLibro)
-                .orElseThrow(() -> new ValidacionDeLogicaDeNegocioException("El libro con el id ingresado no se encuentra"));
+                .orElseThrow(() -> new EntityNotFoundException("El libro con el id ingresado no se encuentra"));
 
         return new LibroDto(libro);
     }

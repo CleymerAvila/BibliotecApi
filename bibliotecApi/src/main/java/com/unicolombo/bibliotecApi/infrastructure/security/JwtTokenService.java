@@ -30,7 +30,7 @@ public class JwtTokenService {
         var expiracion = generarFechaExpiracion();
         try{
             return JWT.create()
-                    .withIssuer("trust hotel api")
+                    .withIssuer("bibliotec api")
                     .withSubject(user.getUsername())
                     .withClaim("user", user.getNombre())
                     .withClaim("role", user.getTipo().name())

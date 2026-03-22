@@ -5,6 +5,7 @@ import com.unicolombo.bibliotecApi.dto.prestamo.CrearPrestamoDto;
 import com.unicolombo.bibliotecApi.dto.prestamo.PrestamoDto;
 import com.unicolombo.bibliotecApi.service.PrestamoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class PrestamoController {
     }
 
     @PostMapping
-    public ResponseEntity<PrestamoDto> crearPrestamo(@RequestBody CrearPrestamoDto datos, UriComponentsBuilder uriCompBuilder){
+    public ResponseEntity<PrestamoDto> crearPrestamo(@Valid @RequestBody CrearPrestamoDto datos, UriComponentsBuilder uriCompBuilder){
 
         PrestamoDto prestamoDto = prestamoService.crearPrestamo(datos);
         URI url = uriCompBuilder.path("/prestamos/{idPrestamo}").buildAndExpand(prestamoDto.idPrestamo()).toUri();
@@ -37,7 +38,7 @@ public class PrestamoController {
 
     @PutMapping("{idPrestamo}")
     @Transactional
-    public ResponseEntity<PrestamoDto> actualizarPrestamo(@PathVariable long idPrestamo, @RequestBody ActualizarPrestamoDto datos){
+    public ResponseEntity<PrestamoDto> actualizarPrestamo(@PathVariable long idPrestamo,@Valid @RequestBody ActualizarPrestamoDto datos){
         PrestamoDto prestamoDto = prestamoService.actualizarPrestamo(idPrestamo, datos);
         return ResponseEntity.ok(prestamoDto);
     }

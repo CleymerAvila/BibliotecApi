@@ -4,6 +4,7 @@ import com.unicolombo.bibliotecApi.dto.auth.JwtTokenDto;
 import com.unicolombo.bibliotecApi.dto.auth.LoginDto;
 import com.unicolombo.bibliotecApi.dto.auth.RegistroDto;
 import com.unicolombo.bibliotecApi.service.AutenticacionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,12 @@ public class AutenticacionController {
     private AutenticacionService autenticacionService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenDto> login(@RequestBody LoginDto datos){
+    public ResponseEntity<JwtTokenDto> login(@Valid @RequestBody LoginDto datos){
         return ResponseEntity.ok(autenticacionService.autenticacionLogin(datos));
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<String> registro(@RequestBody RegistroDto datos){
+    public ResponseEntity<String> registro(@Valid @RequestBody RegistroDto datos){
         autenticacionService.registrarUsuario(datos);
         return ResponseEntity.ok("Usuario registrado con exito!");
     }

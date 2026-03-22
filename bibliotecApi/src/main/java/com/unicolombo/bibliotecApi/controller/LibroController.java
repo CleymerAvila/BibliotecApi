@@ -5,7 +5,10 @@ import com.unicolombo.bibliotecApi.dto.libro.CrearLibroDto;
 import com.unicolombo.bibliotecApi.dto.libro.LibroDto;
 import com.unicolombo.bibliotecApi.service.LibroService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,8 +24,9 @@ public class LibroController {
     private LibroService libroService;
 
     @GetMapping
-    public ResponseEntity<List<LibroDto>> obtenerLibros(){
-        return ResponseEntity.ok(libroService.obtenerLibros());
+    public ResponseEntity<Page<LibroDto>> obtenerLibros(Pageable pageable){
+        Page<LibroDto> libros = libroService.obtenerLibros(pageable);
+        return ResponseEntity.ok(libros);
     }
 
     @GetMapping("{idLibro}")
@@ -31,7 +35,7 @@ public class LibroController {
     }
 
     @PostMapping
-    public ResponseEntity<LibroDto> crearLibro(@RequestBody CrearLibroDto datos, UriComponentsBuilder uriCompBuilder){
+    public ResponseEntity<LibroDto> crearLibro(@Valid @RequestBody CrearLibroDto datos, UriComponentsBuilder uriCompBuilder){
         LibroDto libro = libroService.crearLibro(datos);
 
         URI url = uriCompBuilder.path("/libros/{idLibro}").buildAndExpand(libro.idLibro()).toUri();
@@ -41,7 +45,7 @@ public class LibroController {
 
     @PutMapping("{idLibro}")
     @Transactional
-    public ResponseEntity<LibroDto> actualizarLibro(@PathVariable long idLibro, @RequestBody ActualizarLibroDto datos){
+    public ResponseEntity<LibroDto> actualizarLibro(@PathVariable long idLibro,@Valid @RequestBody ActualizarLibroDto datos){
         return ResponseEntity.ok(libroService.actualizarLibro(idLibro, datos));
     }
 

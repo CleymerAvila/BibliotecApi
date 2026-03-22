@@ -6,6 +6,7 @@ import com.unicolombo.bibliotecApi.dto.reserva.CrearReservaDto;
 import com.unicolombo.bibliotecApi.dto.reserva.ReservaDto;
 import com.unicolombo.bibliotecApi.service.ReservaService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ReservaController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservaDto> crearReserva(@RequestBody CrearReservaDto datos, UriComponentsBuilder uriCompBuilder){
+    public ResponseEntity<ReservaDto> crearReserva(@Valid  @RequestBody CrearReservaDto datos, UriComponentsBuilder uriCompBuilder){
 
         ReservaDto reservaDto = reservaService.crearReserva(datos);
         URI url = uriCompBuilder.path("/reservas/{idReserva}").buildAndExpand(reservaDto.idReserva()).toUri();
@@ -37,7 +38,7 @@ public class ReservaController {
 
     @PutMapping("{idReserva}")
     @Transactional
-    public ResponseEntity<ReservaDto> actualizarReserva(@PathVariable long idReserva, @RequestBody ActualizarReservaDto datos){
+    public ResponseEntity<ReservaDto> actualizarReserva(@PathVariable long idReserva,@Valid @RequestBody ActualizarReservaDto datos){
         ReservaDto reservaDto = reservaService.actualizarReserva(idReserva, datos);
         return ResponseEntity.ok(reservaDto);
     }

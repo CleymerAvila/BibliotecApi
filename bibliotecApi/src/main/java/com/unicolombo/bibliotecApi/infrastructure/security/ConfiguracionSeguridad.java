@@ -63,8 +63,7 @@ public class ConfiguracionSeguridad {
                                 .requestMatchers("/**").authenticated()
                 )
                 .addFilterBefore(filtroSeguridadJwt, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(c -> c.authenticationEntryPoint(
-                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .build();
     }
 
@@ -82,11 +81,4 @@ public class ConfiguracionSeguridad {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public ObjectMapper objectMapper() {
-//        ObjectMapper mapper= new ObjectMapper();
-//        mapper.registerModule(new JavaTimeModule());
-//        mapper.registerSubtypes(UpdateManagerDTO.class, UpdateReceptionistDTO.class, UpdatePersonnelDTO.class);
-//        return mapper;
-//    }
 }

@@ -27,16 +27,28 @@ public class UsuarioService {
 
     public UsuarioDto crearUsuario(CrearUsuarioDto datos){
         Usuario usuario = new Usuario(datos);
+        // cambiar la contraseña a encriptada
         String contrasenaEncriptada = passwordEncoder.encode(datos.contrasena());
         usuario.setContrasena(contrasenaEncriptada);
+
+        // cambiar correo dependiendo del tipo
+        if(datos.tipo().name().equals("ROLE_ADMIN")){
+            String nuevoCorreo = formatEmail(datos.correo(), "admin");
+            usuario.setCorreo(nuevoCorreo);
+        } else if(datos.tipo().name().equals("ROLE_DOCENTE")){
+            String nuevoCorreo = formatEmail(datos.correo(), "docente");
+            usuario.setCorreo(nuevoCorreo);
+        }
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
         return new UsuarioDto(usuarioGuardado);
     }
 
     public UsuarioDto registroUsuario(RegistroDto datos){
         Usuario usuario = new Usuario(datos);
+        // cambiar la contraseña a encriptada
         String contrasenaEncriptada = passwordEncoder.encode(datos.contrasena());
         usuario.setContrasena(contrasenaEncriptada);
+
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
         return new UsuarioDto(usuarioGuardado);
     }
@@ -59,8 +71,18 @@ public class UsuarioService {
 
     public UsuarioDto obtenerUsuarioId(long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new ValidacionDeLogicaDeNegocioException("El usuario con el id ingresado no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("El usuario con el id ingresado no existe"));
 
         return new UsuarioDto(usuario);
+    }
+
+
+
+    private String formatEmail(String email, String userType) {
+
+        if(userType.equalsIgnoreCase("estudiante")) {
+            return email; // keep original
+        }
+        return email.replaceAll("(?=@)", "." + userType);
     }
 }

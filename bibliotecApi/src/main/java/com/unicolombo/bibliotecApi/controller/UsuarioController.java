@@ -6,6 +6,7 @@ import com.unicolombo.bibliotecApi.dto.usuario.CrearUsuarioDto;
 import com.unicolombo.bibliotecApi.dto.usuario.UsuarioDto;
 import com.unicolombo.bibliotecApi.service.UsuarioService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> crearUsuario(@RequestBody CrearUsuarioDto datos, UriComponentsBuilder uriCompBuilder){
+    public ResponseEntity<UsuarioDto> crearUsuario(@Valid @RequestBody CrearUsuarioDto datos, UriComponentsBuilder uriCompBuilder){
         UsuarioDto usuarioDto = usuarioService.crearUsuario(datos);
 
         URI url = uriCompBuilder.path("/usuarios/{idUsuario}")
@@ -46,7 +47,7 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity<UsuarioDto> actualizarUsuario(
             @PathVariable long idUsuario,
-            @RequestBody ActualizarUsuarioDto datos
+            @Valid  @RequestBody ActualizarUsuarioDto datos
     ) throws BadRequestException {
         return ResponseEntity.ok(usuarioService.actualizarUsuario(idUsuario, datos));
     }

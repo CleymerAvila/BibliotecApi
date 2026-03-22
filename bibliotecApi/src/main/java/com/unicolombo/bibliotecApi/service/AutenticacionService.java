@@ -30,11 +30,13 @@ public class AutenticacionService {
         try {
             Authentication auth = gestorAutenticacion.authenticate(new UsernamePasswordAuthenticationToken(datos.correo(), datos.contrasena()));
 
-            UserDetails ud =(UserDetails) auth.getPrincipal();
+            UserDetails ud = (UserDetails) auth.getPrincipal();
 
             String token = jwtTokenService.generarToken((Usuario) ud);
 
-            return new JwtTokenDto(token);
+            Usuario usuario = (Usuario) ud;
+            return new JwtTokenDto(token, usuario.getTipo().name(), usuario.getIdUsuario(), usuario.getUsername(),
+                    usuario.getNombre(), usuario.getNombre(), usuario.getCorreo(), usuario.getTipo() );
         } catch (BadCredentialsException ex) {
             throw new BadCredentialsException("Credenciales invalidas");
         }
